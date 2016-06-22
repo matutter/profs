@@ -7,7 +7,7 @@
     "test": "test"
   },
   "scripts": {
-    "test": "cd test && node test.js test_all"
+    "test": "cd test && mocha ."
   },
   "repository": {
     "type": "git",
@@ -26,5 +26,8 @@
   "homepage": "https://github.com/matutter/profs#readme",
   "dependencies": {
     "q": "^1.4.1"
+  },
+  "devDependencies": {
+    "chai": "^3.5.0"
   }
 }

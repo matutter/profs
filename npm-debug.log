@@ -1,0 +1,117 @@
+0 info it worked if it ends with ok
+1 verbose cli [ '/usr/bin/node', '/usr/bin/npm', 'publish' ]
+2 info using npm@2.15.8
+3 info using node@v4.4.7
+4 verbose publish [ '.' ]
+5 silly cache add args [ '.', null ]
+6 verbose cache add spec .
+7 silly cache add parsed spec Result {
+7 silly cache add   raw: '.',
+7 silly cache add   scope: null,
+7 silly cache add   name: null,
+7 silly cache add   rawSpec: '.',
+7 silly cache add   spec: '/home/mat/work/profs',
+7 silly cache add   type: 'directory' }
+8 verbose addLocalDirectory /home/mat/.npm/profs/1.0.2/package.tgz not in flight; packing
+9 verbose correctMkdir /home/mat/.npm correctMkdir not in flight; initializing
+10 verbose tar pack [ '/home/mat/.npm/profs/1.0.2/package.tgz',
+10 verbose tar pack   '/home/mat/work/profs' ]
+11 verbose tarball /home/mat/.npm/profs/1.0.2/package.tgz
+12 verbose folder /home/mat/work/profs
+13 info prepublish profs@1.0.2
+14 verbose addLocalTarball adding from inside cache /home/mat/.npm/profs/1.0.2/package.tgz
+15 verbose correctMkdir /home/mat/.npm correctMkdir not in flight; initializing
+16 silly cache afterAdd profs@1.0.2
+17 verbose afterAdd /home/mat/.npm/profs/1.0.2/package/package.json not in flight; writing
+18 verbose correctMkdir /home/mat/.npm correctMkdir not in flight; initializing
+19 verbose afterAdd /home/mat/.npm/profs/1.0.2/package/package.json written
+20 silly publish { name: 'profs',
+20 silly publish   version: '1.0.2',
+20 silly publish   description: 'A promissory fs module with extra helpful goodness',
+20 silly publish   main: 'profs.js',
+20 silly publish   directories: { test: 'test' },
+20 silly publish   scripts:
+20 silly publish    { test: 'mocha ./test',
+20 silly publish      'test-w-coverage': './node_modules/istanbul/lib/cli.js cover ./node_modules/mocha/bin/_mocha -- -R spec ./test/' },
+20 silly publish   repository:
+20 silly publish    { type: 'git',
+20 silly publish      url: 'git+https://github.com/matutter/profs.git' },
+20 silly publish   keywords: [ 'promise', 'fs', 'profs' ],
+20 silly publish   author:
+20 silly publish    { name: 'matutter',
+20 silly publish      email: 'mcutter.svc@gmail.com',
+20 silly publish      url: 'https://www.npmjs.com/profile/matutter' },
+20 silly publish   license: 'ISC',
+20 silly publish   bugs: { url: 'https://github.com/matutter/profs/issues' },
+20 silly publish   homepage: 'https://github.com/matutter/profs#readme',
+20 silly publish   dependencies: { q: '^1.4.1' },
+20 silly publish   devDependencies:
+20 silly publish    { chai: '^3.5.0',
+20 silly publish      'chai-as-promised': '^5.3.0',
+20 silly publish      coveralls: '^2.11.9',
+20 silly publish      istanbul: '^0.4.4',
+20 silly publish      mocha: '^2.5.3' },
+20 silly publish   readme: '[![Build Status](https://travis-ci.org/matutter/profs.svg?branch=master)](https://travis-ci.org/matutter/profs)\r\n[![Coverage Status](https://coveralls.io/repos/github/matutter/profs/badge.svg?branch=master)](https://coveralls.io/github/matutter/profs?branch=master)\r\n\r\nProfs currently wraps 28% of the existing fs module and adds an additional 6 methods.\r\n\r\n\r\nExtra methods include.\r\n## Unique to profs\r\nThe fs module is exported for utility. \r\n```javascript\r\nvar pro = require(\'./profs.js\')\r\npro.fs.writeFileSync(\'file\', "I\'m a normal fs function")\r\npro.readFile(\'file\', \'utf8\')\r\n.then(console.log)\r\n.then(() => pro.unlink(\'file\'))\r\n.catch(console.error)\r\n```\r\n### 1.0 fs.stat\r\nThe ```fs.stat``` object has a ```path``` property containing the fully-qualified path to the file; this makes unbound chaining more simple.\r\n### 1.1 mkdirp\r\nActs like the linux command "mkdir -p" and creates the full path a directory.\r\n### 1.2 touch\r\nActs like the linux command "touch" and create an empty file.\r\n### 1.3 readdirStat\r\nCreates an array of fs.stats for each file in a directory.\r\n### 1.4 walk\r\nWalks entire directory structure creating ```{files:[], directories:[]}``` object of either fs.stats or fully-qualified paths.\r\n### 1.5 removerf \r\nRemove a folder and all of it\'s contents.\r\n',
+20 silly publish   readmeFilename: 'README.md',
+20 silly publish   gitHead: '0374a23f4b70afdfb0693c9a4571c9ac2e637587',
+20 silly publish   _id: 'profs@1.0.2',
+20 silly publish   _shasum: '1bc3b4877df330ac1e51d7f53bd4dbe01ebe3fe8',
+20 silly publish   _from: '.' }
+21 verbose getPublishConfig undefined
+22 silly mapToRegistry name profs
+23 silly mapToRegistry using default registry
+24 silly mapToRegistry registry https://registry.npmjs.org/
+25 silly mapToRegistry data Result {
+25 silly mapToRegistry   raw: 'profs',
+25 silly mapToRegistry   scope: null,
+25 silly mapToRegistry   name: 'profs',
+25 silly mapToRegistry   rawSpec: '',
+25 silly mapToRegistry   spec: 'latest',
+25 silly mapToRegistry   type: 'tag' }
+26 silly mapToRegistry uri https://registry.npmjs.org/profs
+27 verbose publish registryBase https://registry.npmjs.org/
+28 silly publish uploading /home/mat/.npm/profs/1.0.2/package.tgz
+29 verbose request uri https://registry.npmjs.org/profs
+30 verbose request sending authorization for write operation
+31 info attempt registry request try #1 at 5:43:36 PM
+32 verbose request using bearer token for auth
+33 verbose request id 4cccb0fd5035b33e
+34 http request PUT https://registry.npmjs.org/profs
+35 http 403 https://registry.npmjs.org/profs
+36 verbose headers { 'content-type': 'application/json',
+36 verbose headers   'cache-control': 'max-age=300',
+36 verbose headers   'content-length': '95',
+36 verbose headers   'accept-ranges': 'bytes',
+36 verbose headers   date: 'Fri, 15 Jul 2016 23:51:17 GMT',
+36 verbose headers   via: '1.1 varnish',
+36 verbose headers   connection: 'keep-alive',
+36 verbose headers   'x-served-by': 'cache-iad2636-IAD',
+36 verbose headers   'x-cache': 'MISS',
+36 verbose headers   'x-cache-hits': '0',
+36 verbose headers   'x-timer': 'S1468626676.389333,VS0,VE659',
+36 verbose headers   vary: 'Accept-Encoding' }
+37 verbose request invalidating /home/mat/.npm/registry.npmjs.org/profs on PUT
+38 error publish Failed PUT 403
+39 verbose stack Error: "You cannot publish over the previously published version 1.0.2." : profs
+39 verbose stack     at makeError (/usr/lib/node_modules/npm/node_modules/npm-registry-client/lib/request.js:264:12)
+39 verbose stack     at CachingRegistryClient.<anonymous> (/usr/lib/node_modules/npm/node_modules/npm-registry-client/lib/request.js:252:14)
+39 verbose stack     at Request._callback (/usr/lib/node_modules/npm/node_modules/npm-registry-client/lib/request.js:172:14)
+39 verbose stack     at Request.self.callback (/usr/lib/node_modules/npm/node_modules/request/request.js:200:22)
+39 verbose stack     at emitTwo (events.js:87:13)
+39 verbose stack     at Request.emit (events.js:172:7)
+39 verbose stack     at Request.<anonymous> (/usr/lib/node_modules/npm/node_modules/request/request.js:1067:10)
+39 verbose stack     at emitOne (events.js:82:20)
+39 verbose stack     at Request.emit (events.js:169:7)
+39 verbose stack     at IncomingMessage.<anonymous> (/usr/lib/node_modules/npm/node_modules/request/request.js:988:12)
+40 verbose statusCode 403
+41 verbose pkgid profs
+42 verbose cwd /home/mat/work/profs
+43 error Linux 3.10.0-327.13.1.el7.x86_64
+44 error argv "/usr/bin/node" "/usr/bin/npm" "publish"
+45 error node v4.4.7
+46 error npm  v2.15.8
+47 error code E403
+48 error "You cannot publish over the previously published version 1.0.2." : profs
+49 error If you need help, you may report this error at:
+49 error     <https://github.com/npm/npm/issues>
+50 verbose exit [ 1, true ]

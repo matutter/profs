@@ -1,7 +1,7 @@
 {
   "name": "profs",
   "version": "1.0.2",
-  "description": "A promissory fs module with extra commonly used functions",
+  "description": "A promissory fs module with extra helpful goodness",
   "main": "profs.js",
   "directories": {
     "test": "test"

@@ -28,7 +28,7 @@ function mkdir(path, mode) {
 	fs.mkdir(path, mode || 0o777, e =>
 		e
 		? d.reject(e)
-		: d.resolve(null)
+		: d.resolve(path) // because handler wont have to check for error
 	)
 	return d.promise
 }

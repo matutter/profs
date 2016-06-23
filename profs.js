@@ -103,7 +103,7 @@ module.exports.rmdir = rmdir
 
 function open(path, flags, mode) {
 	var d = q.defer()
-	fs.open(path, flags, mode, (e, fd) =>
+	fs.open(path, flags || 'r', mode || '0666', (e, fd) =>
 		e
 		? d.reject(e)
 		: d.resolve(fd)
@@ -264,3 +264,21 @@ function removerf(path) {
 }
 
 module.exports.removerf = removerf
+
+function readFile(path, options) {
+  var d = q.defer()
+  fs.readFile(path, options || {encoding:null, flags:'r'}, (e,data) => {
+    e
+    ? d.reject(e)
+    : d.resolve(data)
+  })
+  return d.promise
+}
+
+module.exports.readFile = readFile
+
+function readFileUtf8(path) {
+  return readFile(path, 'utf8')
+}
+
+module.exports.readFileUtf8 = readFileUtf8

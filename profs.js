@@ -136,19 +136,19 @@ function stat(path) {
 	fs.stat(path, (e, stats) =>
 		e
 		? d.reject(e)
-		: d.resolve(stats)
+		: d.resolve((stats.path = path) && stats)
 	)
 	return d.promise
 }
 
 module.exports.stat = stat
 
-function fstat(path) {
+function fstat(fd) {
 	var d = q.defer()
-	fs.fstat(path, (e, stats) =>
+	fs.fstat(fd, (e, stats) =>
 		e
 		? d.reject(e)
-		: d.resolve(stats)
+		: d.resolve((stats.fd = fd) && stats)
 	)
 	return d.promise
 }

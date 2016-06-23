@@ -1,6 +1,8 @@
 language: node_js
 before_script:
   - npm install -g mocha
+after_success:
+  - coveralls
 node_js:
   - 6
   - 5

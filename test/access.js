@@ -1,11 +1,29 @@
-var assert = require('chai').assert
+var assert = require('chai').use(require('chai-as-promised')).assert
+var pro = require('..')
+var fs = require('fs')
 
-describe('Array', () => {
-  describe('#indexOf()', () => {
-    it('should return -1 when the value is not present', () => {
-      assert.equal(-1, [1,2,3].indexOf(5))
-      assert.equal(-1, [1,2,3].indexOf(0))
-      assert.equal(1, [1,2,3].indexOf(2))
+var dir = './files'
+var filename = './files/access.txt'
+
+describe('setup', ()=> {
+  it('should make a "files" folder', ()=> {
+    fs.mkdirSync(dir)
+  })
+  it('should make a r+w file', ()=> {
+    var fd = fs.openSync(filename, 'w')
+    fs.writeSync(fd, 'test data', 0, 'utf8')
+    fs.closeSync(fd)
+
+  })
+})
+
+
+describe('access', ()=> {
+  describe('without options', ()=> {
+    it('should default to R_OK', ()=> {
+	return assert.eventually.equal(pro.access(filename), null)
     })
   })
 })
+
+

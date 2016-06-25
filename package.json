@@ -1,0 +1,30 @@
+{
+  "name": "profs",
+  "version": "1.0.0",
+  "description": "A promise fs library with added value",
+  "main": "profs.js",
+  "directories": {
+    "test": "test"
+  },
+  "scripts": {
+    "test": "cd test && node test.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/matutter/profs.git"
+  },
+  "keywords": [
+    "promise",
+    "fs",
+    "profs"
+  ],
+  "author": "matutter <mcutter.svc@gmail.com> (https://www.npmjs.com/profile/matutter)",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/matutter/profs/issues"
+  },
+  "homepage": "https://github.com/matutter/profs#readme",
+  "dependencies": {
+    "q": "^1.4.1"
+  }
+}

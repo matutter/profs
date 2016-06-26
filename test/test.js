@@ -4,6 +4,7 @@ const q = require('q')
 var files = ['file0.txt', 'file1.css']
 var dirs = ['./dir0', './dir1']
 var nesteddirs = ['./dir0/dir2', './dir1/dir3', './dir0/dir4']
+var mkdirpdir = ['./dir0/dir/dir/dir/dir', './dir0/dir4/dir5']
 var all = files.concat(dirs).concat(nesteddirs)
 
 function mkdirTEST(x) {
@@ -15,7 +16,7 @@ function mkdirTEST(x) {
 function mkdirpTEST(x) {
 	return pro.mkdirp(x)
 	.then(e=>console.log('PASS', "mkdirp", x))
-	.catch(e=>console.error('FAIL', 'mkdirp', x))
+	.catch(e=>console.error('FAIL', 'mkdirp', x, e))
 }
 
 function unlinkTEST(x) {
@@ -63,12 +64,15 @@ function closeTEST(x) {
 	}
 }
 
+
 q.all(dirs.concat(nesteddirs).map(mkdirTEST))
 .then(e=>q.all(nesteddirs.map(rmdirTEST)))
 .then(e=>q.all(dirs.map(rmdirTEST)))
 .then(e=>q.all(files.map(touchTEST)))
 .then(e=>q.all(files.map(unlinkTEST)))
 .then(e=>q.all(files.map(openTEST)))
-.then(fds => q.all(fds.map(closeTEST)))
+.then(fds=>q.all(fds.map(closeTEST)))
 .then(e=>q.all(files.map(unlinkTEST)))
+.then(e=>q.all(nesteddirs.concat(mkdirpdir).map(mkdirpTEST)))
+.then(e=>q.all(dirs.map(rmdirTEST)))
 .catch(console.error)

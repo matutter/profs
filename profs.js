@@ -4,6 +4,10 @@ const p = require('path')
 
 /* make node modules available */
 module.exports.fs = fs
+module.exports.F_OK = fs.F_OK
+module.exports.R_OK = fs.R_OK
+module.exports.W_OK = fs.W_OK
+module.exports.X_OK = fs.X_OK
 
 function access(path, mode) {
 	var d = q.defer()
@@ -29,21 +33,38 @@ function mkdir(path, mode) {
 
 module.exports.mkdir = mkdir
 
-function mkdirp(path, mode) {
+function mkdirp_mkdir(path, mode) {
 	var d = q.defer()
+	fs.mkdir(path, mode, e => 
+		e && e.code !== 'EEXIST'
+		? d.reject(e)
+		: d.resolve(null)
+	)
+	return d.promise
+}
+
+function mkdirp_internal(path, mode, defer, paths) {
 	fs.access(path, mode, e => {
 		if(e) {
-			if(e.code === 'ENOENT')	{
-				mkdirp(p.dirname(path,mode))
-				.then(mkdir(path,mode))
-				.then(d.resolve(null))
+			if(e.code === 'ENOENT') {
+				paths.push(path)
+				mkdirp_internal(p.dirname(path), mode, defer, paths)
 			} else {
-				d.reject(e)
+				defer.reject(e)
 			}
 		} else {
-			d.resolve(mkdir(path, mode))
+			if(!paths.length) return defer.resolve(null)
+			paths.push(mkdirp_mkdir(paths.pop(), mode))
+			defer.resolve(paths.reduceRight((parent, child) => 
+				parent.then(e => mkdirp_mkdir(child, mode))
+			))
 		}
 	})
+}
+
+function mkdirp(path, mode) {
+	var d = q.defer()
+	mkdirp_internal(p.resolve(path), mode, d, [])
 	return d.promise
 }
 
@@ -126,3 +147,24 @@ function fstat(path) {
 }
 
 module.exports.fstat = fstat
+
+function readdir(path, options) {
+	var d = q.defer()
+	fs.readdir(path, options, (e, files) =>
+		e
+		? d.reject(e)
+		: d.resolve(files)
+	)
+	return d.promise
+}
+
+module.exports.readdir = readdir
+
+function readdirStat(path, options) {
+	return readdir(path, options).then( files => 
+		q.all(files.map(filename => p.join(path, filename))
+		.map(stat))
+	)
+}
+
+module.exports.readdirStat = readdirStat

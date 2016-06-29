@@ -2,6 +2,8 @@ const q = require('q')
 const fs = require('fs')
 const p = require('path')
 
+function dummy() {}
+
 /* make node modules available */
 module.exports.fs = fs
 module.exports.F_OK = fs.F_OK
@@ -150,7 +152,7 @@ module.exports.fstat = fstat
 
 function readdir(path, options) {
 	var d = q.defer()
-	fs.readdir(path, options, (e, files) =>
+	fs.readdir(path, (e, files) =>
 		e
 		? d.reject(e)
 		: d.resolve(files)
@@ -161,10 +163,92 @@ function readdir(path, options) {
 module.exports.readdir = readdir
 
 function readdirStat(path, options) {
-	return readdir(path, options).then( files => 
-		q.all(files.map(filename => p.join(path, filename))
-		.map(stat))
-	)
+	return readdir(path, options)
+	.then(files => q.all(files
+		.map(file => p.join(path, file))
+		.map(file => stat(file).then(stat => {
+			stat.path = file
+			return stat
+		}))
+	))
 }
 
 module.exports.readdirStat = readdirStat
+
+const walkCallbacks = {
+	onDirectory : function() {},
+	onFile : function() {}
+}
+
+function walk_accumulator(keep_stats) {
+	this.files = []
+	this.directories = []
+	this.keep_stats = keep_stats || false
+}
+
+walk_accumulator.prototype.onFile = function(file) {
+	this.files.push(this.keep_stats ? file : file.path)
+};
+
+walk_accumulator.prototype.onDirectory = function(file) {
+	this.directories.push(this.keep_stats ? file : file.path)
+};
+
+function walk_internal(path, cbs) {
+	return readdirStat(path)
+	.then(files => q.all(files.map(file => {
+		if(file.isDirectory()) {
+			cbs.onDirectory(file)
+			return walk_internal(file.path, cbs)
+		} else {
+			cbs.onFile(file)
+		}
+	})))
+}
+
+
+/**
+ * options
+ * stats <boolean>
+ * toArray <boolean>
+ * onFile <function>
+ * onDirectory <function>
+ * toArray takes president over onFile and onDirectory
+ */
+function walk(path, cbs) {
+	var promise = null
+
+	if(cbs.toArray) {
+		var accum = new walk_accumulator(cbs.stat)
+		promise = walk_internal(path, accum)
+		.then( () => accum )
+	} else if(!(cbs.onFile || cbs.onDirectory)) {
+		return q(null)
+	} else {
+		promise = walk_internal(path, cbs)
+	}
+
+	cbs = Object.assign(walkCallbacks, cbs)
+
+	return promise
+}
+
+module.exports.walk = walk
+
+function removerf(path) {
+	return walk(path, { toArray: true, stat:true })
+	.then(res => {
+		var sequence = res.directories.concat(res.files)
+		sequence.push(q(null))
+		return sequence.reduceRight((a,b) => {
+			return a.then( () => {
+				if(b.isFile())
+					return unlink(b.path)
+				else
+					return rmdir(b.path)
+			})
+		})	
+	}).then(() => rmdir(path))
+}
+
+module.exports.removerf = removerf

@@ -45,12 +45,17 @@ function mkdirp_mkdir(path, mode) {
 	return d.promise
 }
 
-function mkdirp_internal(path, mode, defer, paths) {
+function mkdirp_internal(path, prev, mode, defer, paths) {
+	// if there is no valid root or other issue
+	if(path === prev) return access(prev)
+	.then( () => defer.reject('Cannot create directory in ' + paths.pop()))
+	.catch( e => defer.reject(e) )
+	
 	fs.access(path, mode, e => {
 		if(e) {
 			if(e.code === 'ENOENT') {
 				paths.push(path)
-				mkdirp_internal(p.dirname(path), mode, defer, paths)
+				mkdirp_internal(p.dirname(path), path, mode, defer, paths)
 			} else {
 				defer.reject(e)
 			}
@@ -66,7 +71,7 @@ function mkdirp_internal(path, mode, defer, paths) {
 
 function mkdirp(path, mode) {
 	var d = q.defer()
-	mkdirp_internal(p.resolve(path), mode, d, [])
+	mkdirp_internal(p.resolve(path), null, mode, d, [])
 	return d.promise
 }
 
@@ -150,6 +155,7 @@ function fstat(path) {
 
 module.exports.fstat = fstat
 
+/** options are omitted */
 function readdir(path, options) {
 	var d = q.defer()
 	fs.readdir(path, (e, files) =>
@@ -162,6 +168,9 @@ function readdir(path, options) {
 
 module.exports.readdir = readdir
 
+/**
+ * A call to readdir followed by fs.stat on all files
+ */
 function readdirStat(path, options) {
 	return readdir(path, options)
 	.then(files => q.all(files
@@ -206,13 +215,12 @@ function walk_internal(path, cbs) {
 	})))
 }
 
-
 /**
  * options
- * stats <boolean>
- * toArray <boolean>
- * onFile <function>
- * onDirectory <function>
+ * <boolean> stat If true returns a fs.stat object with a .path property, else the path is returned
+ * <boolean> toArray If true onFile and onDirectory are ignored and the promise resolves to an object with {directories: [], files:[]} where the far end of the arrays containing the bottom on the file tree
+ * <function> onFile If provided this callback receives all files
+ * <function> onDirectory If provided this callback receives all directories
  * toArray takes president over onFile and onDirectory
  */
 function walk(path, cbs) {
@@ -235,6 +243,10 @@ function walk(path, cbs) {
 
 module.exports.walk = walk
 
+/**
+ * Walks the file structure from the top down removing files and folders from the bottom up.
+ * Must be called on a directory
+ */
 function removerf(path) {
 	return walk(path, { toArray: true, stat:true })
 	.then(res => {

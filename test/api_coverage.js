@@ -19,7 +19,7 @@ pro.forEach(m => {
 
 res.api_coverage = '%'+Math.round(res.covered.length/fs.length*100)
 
-console.log(fs)
+//console.log(fs)
 
 var json = JSON.stringify(res, null, 2)
 var format = 'Coverage for async fs api\n```json\n`%s\n```'

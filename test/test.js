@@ -1,4 +1,4 @@
-const pro = require('../profs.js')
+const pro = require('..')
 const q = require('q')
 
 var files = ['file0.txt', 'file1.css']
@@ -70,7 +70,7 @@ function removerfTEST(x) {
 		.catch(e=>console.error('FAIL', 'removerf', x, e))
 }
 
-function test_all() {
+function test_by_hand_all() {
 	q.all(dirs.concat(nesteddirs).map(mkdirTEST))
 	.then(e=>q.all(nesteddirs.map(rmdirTEST)))
 	.then(e=>q.all(dirs.map(rmdirTEST)))
@@ -86,4 +86,36 @@ function test_all() {
 	.catch(console.error)
 }
 
-test_all()
+function test_all() {
+	const functions = ['setup', 'before', 'test', 'after', 'cleanup']
+	Object.keys(pro).forEach(k => {
+		var unit_name = k
+		var test_file = './'+k+'.js'
+
+		if(typeof pro[unit_name] !== 'function') return
+
+		pro.fs.access(test_file, pro.fs.R_OK, e => {
+			console.log(unit_name, 'STARTING')
+			if(e) {
+				console.log(unit_name, 'NO TEST FOUND')
+				return
+			}
+			try {
+				var test = require(test_file)
+				functions.forEach(f => {
+					if(test[f] && typeof test[f] === 'function')
+						test[f]()
+				})
+				console.log(unit_name, 'SUCCESS')
+			} catch(e) {
+				console.error(unit_name, 'FAIL')
+				console.error(e)
+			}
+		})
+	})
+}
+
+if(~process.argv.indexOf('test_all'))
+	test_all()
+else
+	test_by_hand_all()

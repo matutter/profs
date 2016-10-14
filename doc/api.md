@@ -14,7 +14,9 @@
 ## walk(root:String, opts:Object, opts.filter:Function, opts.onFile:Function, opts.onDirectory:Function)
 
   Walk will recursively walk a directory structure creating a _file tree_ as it progresses.
-  	The _file tree_ is a composite of _"nodes"_ where each node is a `File` object and may be traversed by the `File.children` array of child `File` objects.
+  	The _file tree_ is a composite of _"nodes"_ where each node is a `File` object and may be traversed by the `File.children` property;
+  	`File.children` is an array of `File` objects.    
+  
   Walk will return the _root_ node once the promised is fulfilled.    
   	
   `options.filter` is a _filter function_ on each node which determines if a node will be included, or excluded, from the _file tree_.

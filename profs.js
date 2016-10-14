@@ -12,7 +12,7 @@ module.exports.File = File
 /**
 * The file object contains the dirname, basename, children, isFile or isDirectory value, and a stat() function.
 * @typedef File
-* @param filepath Path to file
+* @param {String} filepath Path to file
 * @return {Promise} Will resolve a `this` reference after fs.stat is complete
 */
 function File(filepath) {
@@ -95,9 +95,10 @@ function defaultWalkCallback(child, parent) {
 }
 
 /**
-* Will walk a file hierarchy and create an Object representation of it.
-* If options are used 'filter' may be optional to trigger on all files be default.
-* If options.onFile or onDirectory are used the root promise may return undefined.
+* Will walk a file hierarchy and create a _File tree_ representation of it, where each node is a `File` object.
+* The root node is provided when the promise resolves.
+* If options.filter is used it will act as a _filter function_ on each node.
+* If the `filter`, `onFile`, or `onDirectory` options are used the promissory chain will wait for them to be fulfilled before it is fulfilled.
 * @param {String} root The root path to begin the file-walk
 * @param {Object} opts Options for specifying filter and/or onFile & onDirectory handlers
 * @param {Function} opts.filter Function which must return truthy values to allow a directory or file to trigger handler.

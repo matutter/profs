@@ -61,12 +61,12 @@ fs.walk('path/to/dir', options).return(js_files)
 # API
 ### Generated with `dox`
 
-  - [File()](#filefilepath)
+  - [File()](#filefilepathstring)
   - [File.flatten()](#fileflattenflatarray)
   - [walk()](#walkrootstringoptsobjectoptsfilterfunctionoptsonfilefunctionoptsondirectoryfunction)
   - [mkdirp()](#mkdirpfilepathstring)
 
-## File(filepath:)
+## File(filepath:String)
 
   The file object contains the dirname, basename, children, isFile or isDirectory value, and a stat() function.
 
@@ -76,9 +76,10 @@ fs.walk('path/to/dir', options).return(js_files)
 
 ## walk(root:String, opts:Object, opts.filter:Function, opts.onFile:Function, opts.onDirectory:Function)
 
-  Will walk a file hierarchy and create an Object representation of it.
-  If options are used 'filter' may be optional to trigger on all files be default.
-  If options.onFile or onDirectory are used the root promise may return undefined.
+  Will walk a file hierarchy and create a _File tree_ representation of it, where each node is a `File` object.
+  The root node is provided when the promise resolves.
+  If options.filter is used it will act as a _filter function_ on each node.
+  If the `filter`, `onFile`, or `onDirectory` options are used the promissory chain will wait for them to be fulfilled before it is fulfilled.
 
 ## mkdirp(filepath:String)
 

@@ -12,9 +12,8 @@ module.exports.File = File
 /**
 * The file object contains the dirname, basename, children, isFile or isDirectory value, and a stat() function.
 * @typedef File
-* @param filepath - File path
-* @return Promise
-* @promise.resolve - This reference is produced after fs.stat is complete
+* @param filepath Path to file
+* @return {Promise} Will resolve a `this` reference after fs.stat is complete
 */
 function File(filepath) {
 	this.dirname = path.dirname(filepath)
@@ -36,6 +35,11 @@ function File(filepath) {
 		.return(this)
 }
 
+/**
+* Flattens all File nodes into a single flat array.
+* @param {Array} flat Should not be used
+* @return {Array} Flat array of all children of the File node.
+*/
 File.prototype.flatten = function(flat) {
 	flat = flat || [this]
 	flat = flat.concat(this.children)
@@ -57,7 +61,7 @@ function isFunc(f) {
 	return typeof f === 'function'
 }
 
-/**
+/*!
 * Walks the file tree creates a tree of File objects, returns root
 */
 function walk_internal(child, parent, opts) {
@@ -78,6 +82,12 @@ function walk_internal(child, parent, opts) {
 	})
 }
 
+/*!
+* Method used to aggregate the File tree structure.
+* Assigns the parent (if present) to the child and the child to the parent's children.
+* @param {File} child Child File
+* @param {File} parent Parent File or null
+*/
 function defaultWalkCallback(child, parent) {
 	if(parent)
 		parent.children.push(child)
@@ -88,11 +98,12 @@ function defaultWalkCallback(child, parent) {
 * Will walk a file hierarchy and create an Object representation of it.
 * If options are used 'filter' may be optional to trigger on all files be default.
 * If options.onFile or onDirectory are used the root promise may return undefined.
-* @param root - The root path to begin the file-walk
-* @param opts - Options for specifying filter and/or onFile & onDirectory handlers
-* @param opts.filter - Function which must return truthy values to allow a directory or file to trigger handler.
-* @param opts.onFile - Function which may return a promise to be included in root promissory chain, called each non-directory.
-* @param opts.onDirectory - Function which may return a promise to be included in root promissory chain, called on each directory.
+* @param {String} root The root path to begin the file-walk
+* @param {Object} opts Options for specifying filter and/or onFile & onDirectory handlers
+* @param {Function} opts.filter Function which must return truthy values to allow a directory or file to trigger handler.
+* @param {Function} opts.onFile Function which may return a promise to be included in root promissory chain, called each non-directory.
+* @param {Function} opts.onDirectory Function which may return a promise to be included in root promissory chain, called on each directory.
+* @return {Promise} Resolves a File tree, navigable from root to leaf by the File.children property
 */
 function walk(root, opts) {
 
@@ -123,10 +134,8 @@ function walk(root, opts) {
 * Creates all non-existing directories in a root-to-leaf direction after checking if the leaf doesn't exist.
 * The root promise should be fulfilled in a race-tolerant way ( EEXIST are allowed after an ENOENT )
 * 
-* @param filepath - Path of directory to create
-* @return Promise
-* @promise.resolve - null
-* @promise.reject - Any error other than fs.ENOENT or fs.EEXIST
+* @param {String} filepath Path of directory to create
+* @return {Promise} Will resolve `null` on success else rejected with any error other than fs.ENOENT or fs.EEXIST
 */
 function mkdirp(filepath) {
 	const dirs = path.normalize(filepath).split(path.sep)
@@ -135,7 +144,7 @@ function mkdirp(filepath) {
 		allowENOENT(e)
 		return Promise.reduce(dirs, (parent, child) => {
 
-			var next = Promise.resolve(path.join(parent, child))
+			const next = Promise.resolve(path.join(parent, child))
 
 			if(make_remaining)
 				return fs.mkdirAsync(parent)

@@ -95,12 +95,12 @@ function defaultWalkCallback(child, parent) {
 }
 
 /**
-* Walk will recursively walk a directory structure, creating a _file tree_ as it progresses.
+* Walk will recursively walk a directory structure creating a _file tree_ as it progresses.
 *	The _file tree_ is a composite of _"nodes"_ where each node is a `File` object and may be traversed by the `File.children` array of child `File` objects.
-* Walk will return the _root_ node once the return promised is fulfilled.    
+* Walk will return the _root_ node once the promised is fulfilled.    
 *	
-* If `options.filter` is a _filter function_ on each node which determines if a node will be included, or excluded, from the _file tree_.
-* If the `filter`, `onFile`, or `onDirectory` options are used the promissory chain will wait for them to be fulfilled before it is fulfilled.
+* `options.filter` is a _filter function_ on each node which determines if a node will be included, or excluded, from the _file tree_.
+*	The promissory chain will wait for all `filter`, `onFile`, `onDirectory` callbacks to finish if they return a promise.
 * @param {String} root The root path to begin the file-walk
 * @param {Object} opts Options for specifying filter and/or onFile & onDirectory handlers
 * @param {Function} opts.filter Function which must return truthy values to allow a directory or file to trigger handler.

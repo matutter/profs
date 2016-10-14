@@ -1,284 +1,155 @@
-const q = require('q')
+const Promise = require('bluebird')
 const fs = require('fs')
-const p = require('path')
+const path = require('path')
 
-function dummy() {}
+Promise.promisifyAll(fs)
 
-/* make node modules available */
-module.exports.fs = fs
-module.exports.F_OK = fs.F_OK
-module.exports.R_OK = fs.R_OK
-module.exports.W_OK = fs.W_OK
-module.exports.X_OK = fs.X_OK
+module.exports = fs
+module.exports.walk = walk
+module.exports.mkdirp = mkdirp
+module.exports.File = File
 
-function access(path, mode) {
-	var d = q.defer()
-	fs.access(path, mode, e =>
-		e
-		? d.reject(e)
-		: d.resolve(null)
-	)
-	return d.promise
+/**
+* The file object contains the dirname, basename, children, isFile or isDirectory value, and a stat() function.
+* @typedef File
+* @param filepath - File path
+* @return Promise
+* @promise.resolve - This reference is produced after fs.stat is complete
+*/
+function File(filepath) {
+	this.dirname = path.dirname(filepath)
+	this.basename = path.basename(filepath)
+	this.path = filepath
+	this.children = []
+	this.stat = null
+
+	this.parent = null
+
+	return fs.statAsync(this.path)
+		.then(stat => {
+			this.stat = () => stat
+			if(stat.isFile())
+				this.isFile = true
+			if(stat.isDirectory())
+				this.isDirectory = true
+		})
+		.return(this)
 }
 
-module.exports.access = access
+File.prototype.flatten = function(flat) {
+	flat = flat || [this]
+	flat = flat.concat(this.children)
+	this.children.forEach(child => child.flatten(flat))
+	return flat
+};
 
-function mkdir(path, mode) {
-	var d = q.defer()
-	fs.mkdir(path, mode || 0o777, e =>
-		e
-		? d.reject(e)
-		: d.resolve(path) // because handler wont have to check for error
-	)
-	return d.promise
+function allowENOENT(e) {
+	if(e.code !== 'ENOENT') throw e
+	return null
 }
 
-module.exports.mkdir = mkdir
-
-function mkdirp_mkdir(path, mode) {
-	var d = q.defer()
-	fs.mkdir(path, mode, e => 
-		e && e.code !== 'EEXIST'
-		? d.reject(e)
-		: d.resolve(null)
-	)
-	return d.promise
+function allowEEXIST(e) {
+	if(e.code !== 'EEXIST') throw e
+	return null
 }
 
-function mkdirp_internal(path, prev, mode, defer, paths) {
-	// if there is no valid root or other issue
-	if(path === prev) return access(prev)
-	.then( () => defer.reject('Cannot create directory in ' + paths.pop()))
-	.catch( e => defer.reject(e) )
-	
-	fs.access(path, mode, e => {
-		if(e) {
-			if(e.code === 'ENOENT') {
-				paths.push(path)
-				mkdirp_internal(p.dirname(path), path, mode, defer, paths)
-			} else {
-				defer.reject(e)
-			}
-		} else {
-			if(!paths.length) return defer.resolve(null)
-			paths.push(mkdirp_mkdir(paths.pop(), mode))
-			defer.resolve(paths.reduceRight((parent, child) => 
-				parent.then(e => mkdirp_mkdir(child, mode))
-			))
-		}
+function isFunc(f) {
+	return typeof f === 'function'
+}
+
+/**
+* Walks the file tree creates a tree of File objects, returns root
+*/
+function walk_internal(child, parent, opts) {
+	return Promise.resolve(child).then(file => {
+		if(!opts.filter(file)) return Promise.resolve(file)
+
+		if(file.isDirectory) return Promise.resolve(opts.onDirectory(file, parent))
+				.then(() => fs.readdirAsync(file.path))
+				.then(children => Promise.map(children, child => {
+					var filepath = path.join(file.path, child)
+					return new File(filepath)
+				}))
+				.then(children => Promise.map(children, child => walk_internal(child, file, opts)))
+				.return(file)
+
+		else return Promise.resolve(opts.onFile(file, parent, opts))
+				.return(file)
 	})
 }
 
-function mkdirp(path, mode) {
-	var d = q.defer()
-	mkdirp_internal(p.resolve(path), null, mode, d, [])
-	return d.promise
-}
-
-module.exports.mkdirp = mkdirp
-
-function unlink(path) {
-	var d = q.defer()
-	fs.unlink(path, e =>
-		e
-		? d.reject(e)
-		: d.resolve(null)
-	)
-	return d.promise
-}
-
-module.exports.unlink = unlink
-
-function rmdir(path) {
-	var d = q.defer()
-	fs.rmdir(path, e =>
-		e
-		? d.reject(e)
-		: d.resolve(null)
-	)
-	return d.promise
-}
-
-module.exports.rmdir = rmdir
-
-function open(path, flags, mode) {
-	var d = q.defer()
-	fs.open(path, flags || 'r', mode || '0666', (e, fd) =>
-		e
-		? d.reject(e)
-		: d.resolve(fd)
-	)
-	return d.promise
-}
-
-module.exports.open = open
-
-function close(fd) {
-	var d = q.defer()
-	fs.close(fd, e =>
-		e
-		? d.reject(e)
-		: d.resolve(null)
-	)
-	return d.promise
-}
-
-module.exports.close = close
-
-function touch(path) {
-	return open(path, 'w').then(fd => close(fd))
-}
-
-module.exports.touch = touch
-
-function stat(path) {
-	var d = q.defer()
-	fs.stat(path, (e, stats) =>
-		e
-		? d.reject(e)
-		: d.resolve((stats.path = path) && stats)
-	)
-	return d.promise
-}
-
-module.exports.stat = stat
-
-function fstat(fd) {
-	var d = q.defer()
-	fs.fstat(fd, (e, stats) =>
-		e
-		? d.reject(e)
-		: d.resolve((stats.fd = fd) && stats)
-	)
-	return d.promise
-}
-
-module.exports.fstat = fstat
-
-/** options are omitted */
-function readdir(path, options) {
-	var d = q.defer()
-	fs.readdir(path, (e, files) =>
-		e
-		? d.reject(e)
-		: d.resolve(files)
-	)
-	return d.promise
-}
-
-module.exports.readdir = readdir
-
-/**
- * A call to readdir followed by fs.stat on all files
- */
-function readdirStat(path, options) {
-	return readdir(path, options)
-	.then(files => q.all(files
-		.map(file => p.join(path, file))
-		.map(file => stat(file).then(stat => {
-			stat.path = file
-			return stat
-		}))
-	))
-}
-
-module.exports.readdirStat = readdirStat
-
-const walkCallbacks = {
-	onDirectory : function() {},
-	onFile : function() {}
-}
-
-function walk_accumulator(keep_stats) {
-	this.files = []
-	this.directories = []
-	this.keep_stats = keep_stats || false
-}
-
-walk_accumulator.prototype.onFile = function(file) {
-	this.files.push(this.keep_stats ? file : file.path)
-};
-
-walk_accumulator.prototype.onDirectory = function(file) {
-	this.directories.push(this.keep_stats ? file : file.path)
-};
-
-function walk_internal(path, cbs) {
-	return readdirStat(path)
-	.then(files => q.all(files.map(file => {
-		if(file.isDirectory()) {
-			cbs.onDirectory(file)
-			return walk_internal(file.path, cbs)
-		} else {
-			cbs.onFile(file)
-		}
-	})))
+function defaultWalkCallback(child, parent) {
+	if(parent)
+		parent.children.push(child)
+	child.parent = parent
 }
 
 /**
- * options
- * <boolean> stat If true returns a fs.stat object with a .path property, else the path is returned
- * <boolean> toArray If true onFile and onDirectory are ignored and the promise resolves to an object with {directories: [], files:[]} where the far end of the arrays containing the bottom on the file tree
- * <function> onFile If provided this callback receives all files
- * <function> onDirectory If provided this callback receives all directories
- * toArray takes president over onFile and onDirectory
- */
-function walk(path, cbs) {
-	var promise = null
+* Will walk a file hierarchy and create an Object representation of it.
+* If options are used 'filter' may be optional to trigger on all files be default.
+* If options.onFile or onDirectory are used the root promise may return undefined.
+* @param root - The root path to begin the file-walk
+* @param opts - Options for specifying filter and/or onFile & onDirectory handlers
+* @param opts.filter - Function which must return truthy values to allow a directory or file to trigger handler.
+* @param opts.onFile - Function which may return a promise to be included in root promissory chain, called each non-directory.
+* @param opts.onDirectory - Function which may return a promise to be included in root promissory chain, called on each directory.
+*/
+function walk(root, opts) {
 
-	if(cbs.toArray) {
-		var accum = new walk_accumulator(cbs.stat)
-		promise = walk_internal(path, accum)
-		.then( () => accum )
-	} else if(!(cbs.onFile || cbs.onDirectory)) {
-		return q(null)
+	if(!opts) opts = {}
+
+	if(!opts.onFile) {
+		opts.onFile = defaultWalkCallback
 	} else {
-		promise = walk_internal(path, cbs)
+		if(!isFunc(opts.onFile)) throw new Error('Expected onFile to be a function')
 	}
 
-	cbs = Object.assign(walkCallbacks, cbs)
+	if(!opts.onDirectory) {
+		opts.onDirectory = defaultWalkCallback
+	} else {
+		if(!isFunc(opts.onDirectory)) throw new Error('Expected onDirectory to be a function')
+	}
 
-	return promise
+	if(!opts.filter) { 
+		opts.filter = () => true
+	} else {
+		if(!isFunc(opts.filter)) throw new Error('Expected filter to be a function')
+	}
+
+	return walk_internal(new File(root), null, opts)
 }
-
-module.exports.walk = walk
 
 /**
- * Walks the file structure from the top down removing files and folders from the bottom up.
- * Must be called on a directory
- */
-function removerf(path) {
-	return walk(path, { toArray: true, stat:true })
-	.then(res => {
-		var sequence = res.directories.concat(res.files)
-		sequence.push(q(null))
-		return sequence.reduceRight((a,b) => {
-			return a.then( () => {
-				if(b.isFile())
-					return unlink(b.path)
-				else
-					return rmdir(b.path)
-			})
-		})	
-	}).then(() => rmdir(path))
+* Creates all non-existing directories in a root-to-leaf direction after checking if the leaf doesn't exist.
+* The root promise should be fulfilled in a race-tolerant way ( EEXIST are allowed after an ENOENT )
+* 
+* @param filepath - Path of directory to create
+* @return Promise
+* @promise.resolve - null
+* @promise.reject - Any error other than fs.ENOENT or fs.EEXIST
+*/
+function mkdirp(filepath) {
+	const dirs = path.normalize(filepath).split(path.sep)
+	var make_remaining = false 
+	return fs.accessAsync(filepath).catch(e => {
+		allowENOENT(e)
+		return Promise.reduce(dirs, (parent, child) => {
+
+			var next = Promise.resolve(path.join(parent, child))
+
+			if(make_remaining)
+				return fs.mkdirAsync(parent)
+					.catch(allowEEXIST)
+					.return(next)
+
+			return fs.accessAsync(parent).catch(e => {
+					allowENOENT(e)
+					make_remaining = true
+					return fs.mkdirAsync(parent)
+				})
+				.catch(allowEEXIST)
+				.return(next)
+		}).then(filepath => fs.mkdirAsync(filepath))
+			.catch(allowEEXIST)
+	})
 }
-
-module.exports.removerf = removerf
-
-function readFile(path, options) {
-  var d = q.defer()
-  fs.readFile(path, options || {encoding:null, flags:'r'}, (e,data) => {
-    e
-    ? d.reject(e)
-    : d.resolve(data)
-  })
-  return d.promise
-}
-
-module.exports.readFile = readFile
-
-function readFileUtf8(path) {
-  return readFile(path, 'utf8')
-}
-
-module.exports.readFileUtf8 = readFileUtf8

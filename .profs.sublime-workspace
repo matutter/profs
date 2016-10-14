@@ -1,0 +1,521 @@
+{
+	"auto_complete":
+	{
+		"selected_items":
+		[
+			[
+				"val",
+				"validator"
+			],
+			[
+				"get",
+				"getValidators"
+			],
+			[
+				"vali",
+				"validators"
+			],
+			[
+				"req",
+				"request_uri"
+			],
+			[
+				"pro",
+				"proto\tPrototype"
+			],
+			[
+				"eng",
+				"engineValidator"
+			],
+			[
+				"cont",
+				"container_validators"
+			],
+			[
+				"stat",
+				"statusCode"
+			],
+			[
+				"proto",
+				"prototype"
+			],
+			[
+				"c",
+				"clazz"
+			],
+			[
+				"res",
+				"resolver"
+			],
+			[
+				"cl",
+				"ClientInterface"
+			],
+			[
+				"u",
+				"uri"
+			],
+			[
+				"resolv",
+				"resolvers"
+			],
+			[
+				"ar",
+				"ary"
+			],
+			[
+				"head",
+				"headResolver"
+			],
+			[
+				"hed",
+				"headers"
+			],
+			[
+				"D",
+				"DockerRegistry"
+			],
+			[
+				"man",
+				"manifest"
+			],
+			[
+				"dele",
+				"deleteLayer"
+			],
+			[
+				"re",
+				"repositories"
+			],
+			[
+				"path",
+				"path_prefix"
+			],
+			[
+				"dock",
+				"DockerEngineClient"
+			],
+			[
+				"tra",
+				"transforms"
+			],
+			[
+				"va",
+				"value"
+			],
+			[
+				"api",
+				"ApiWrapper"
+			],
+			[
+				"requ",
+				"require"
+			],
+			[
+				"top",
+				"topBtn"
+			],
+			[
+				"scroll",
+				"scrollTop"
+			],
+			[
+				"mai",
+				"main-content"
+			],
+			[
+				"ana",
+				"animation"
+			],
+			[
+				"follow",
+				"followBtn"
+			],
+			[
+				"controller",
+				"controllers"
+			],
+			[
+				"confi",
+				"Config"
+			],
+			[
+				"se",
+				"secure"
+			],
+			[
+				"co",
+				"cookie"
+			],
+			[
+				"back",
+				"background-color"
+			],
+			[
+				"border",
+				"border-radius"
+			],
+			[
+				"fon",
+				"font-weight"
+			],
+			[
+				"nu",
+				"nursing_info"
+			],
+			[
+				"fil",
+				"fields"
+			],
+			[
+				"drug",
+				"DrugModel"
+			],
+			[
+				"Dru",
+				"DrugSchema"
+			],
+			[
+				"connec",
+				"connection"
+			],
+			[
+				"Logg",
+				"LoggerPrefix"
+			],
+			[
+				"base",
+				"basename"
+			],
+			[
+				"tran",
+				"transports"
+			],
+			[
+				"file",
+				"file_opts"
+			],
+			[
+				"chc",
+				"checkAccess"
+			],
+			[
+				"con",
+				"config"
+			],
+			[
+				"readdir",
+				"fs.readdir(path, callback);"
+			]
+		]
+	},
+	"buffers":
+	[
+		{
+			"file": "profs.js",
+			"settings":
+			{
+				"buffer_size": 5789,
+				"line_ending": "Unix"
+			}
+		}
+	],
+	"build_system": "",
+	"build_system_choices":
+	[
+	],
+	"build_varint": "",
+	"command_palette":
+	{
+		"height": 132.0,
+		"last_filter": "install",
+		"selected_items":
+		[
+			[
+				"install",
+				"Package Control: Install Package"
+			],
+			[
+				"remove",
+				"Package Control: Remove Package"
+			],
+			[
+				"npm",
+				"Nodejs::NPM::Install"
+			],
+			[
+				"insta",
+				"Package Control: Install Package"
+			],
+			[
+				"gl",
+				"Glue - Launch"
+			]
+		],
+		"width": 431.0
+	},
+	"console":
+	{
+		"height": 0.0,
+		"history":
+		[
+		]
+	},
+	"distraction_free":
+	{
+		"menu_visible": true,
+		"show_minimap": false,
+		"show_open_files": false,
+		"show_tabs": false,
+		"side_bar_visible": false,
+		"status_bar_visible": false
+	},
+	"file_history":
+	[
+		"/home/mat/git/docker-as-promised/lib/clients/DockerEngine.js",
+		"/home/mat/git/docker-as-promised/package.json",
+		"/home/mat/git/docker-as-promised/lib/clients/ClientInterface.js",
+		"/home/mat/git/docker-as-promised/lib/clients/error.js",
+		"/home/mat/git/docker-as-promised/lib/clients/Uri.js",
+		"/home/mat/git/docker-as-promised/.gitignore",
+		"/home/mat/git/docker-as-promised/README.md",
+		"/home/mat/git/docker-as-promised/lib/clients/index.js",
+		"/home/mat/git/docker-as-promised/test/test.js",
+		"/home/mat/git/docker-as-promised/lib/clients/validation/Validator.js",
+		"/home/mat/git/docker-as-promised/lib/clients/validation/engine.js",
+		"/home/mat/git/docker-as-promised/lib/clients/validation/index.js",
+		"/home/mat/git/docker-as-promised/lib/clients/Resolvers.js",
+		"/home/mat/git/docker-as-promised/test/docker_engine/validators.js",
+		"/home/mat/git/docker-as-promised/lib/clients/Validators.js",
+		"/home/mat/git/docker-as-promised/lib/clients/validation/Validators.js",
+		"/home/mat/git/docker-as-promised/index.js",
+		"/home/mat/git/docker-as-promised/lib/clients/DockerRegistry.js",
+		"/home/mat/git/docker-as-promised/lib/clients/uri.js",
+		"/home/mat/git/docker-as-promised/registry_delete_enabled/Dockerfile",
+		"/home/mat/git/test2/test.js",
+		"/home/mat/git/docker-as-promised/lib/clients/docker_remote_api_v1.24.js",
+		"/home/mat/git/docker-as-promised/uri.js",
+		"/home/mat/git/docker-as-promised/node_modules/dockerode/node_modules/docker-modem/lib/modem.js",
+		"/home/mat/git/docker-as-promised/node_modules/dockerode/node_modules/docker-modem/node_modules/debug/lib/debug.js",
+		"/home/mat/git/docker-as-promised/node_modules/dockerode/node_modules/docker-modem/node_modules/debug/index.js",
+		"/home/mat/git/dropnode/configs/database.conf",
+		"/home/mat/git/dropnode/.gitignore",
+		"/home/mat/git/dropnode/lib/logger/logger.js",
+		"/home/mat/git/dropnode/lib/app/app.js",
+		"/home/mat/git/dropnode/lib/app/database/db.js",
+		"/home/mat/git/dropnode/configs/logger.conf",
+		"/home/mat/git/dropnode/node_modules/passport-local/lib/strategy.js",
+		"/home/mat/git/dropnode/node_modules/passport-local/lib/utils.js",
+		"/home/mat/git/dropnode/lib/app/controllers/main/main.js",
+		"/home/mat/git/dropnode/lib/config/config.js",
+		"/home/mat/git/dropnode/node_modules/g/index.js",
+		"/home/mat/git/dropnode/node_modules/g/README.md",
+		"/home/mat/git/dropnode/node_modules/passport-local/lib/index.js",
+		"/home/mat/git/dropnode/lib/app/main/user/package.json",
+		"/home/mat/git/dropnode/lib/app/main/main.js",
+		"/home/mat/git/dropnode/lib/app/main/index.js",
+		"/home/mat/git/dropnode/lib/precompile/index.js",
+		"/home/mat/git/dropnode/lib/app/handlers/handlers.js",
+		"/home/mat/git/dropnode/dropnode.js",
+		"/home/mat/git/dropnode/lib/app/Controller.js",
+		"/home/mat/git/dropnode/lib/app/main/main.less",
+		"/home/mat/git/dropnode/views/index.pug",
+		"/home/mat/git/dropnode/node_modules/bootstrap/dist/js/npm.js",
+		"/home/mat/git/dropnode/lib/app/handlers/package.json",
+		"/home/mat/git/dropnode/lib/app/session.js",
+		"/home/mat/git/dropnode/lib/app/server.js",
+		"/home/mat/git/dropnode/views/mixin.pug",
+		"/home/mat/git/dropnode/views/style.css",
+		"/home/mat/git/dropnode/views/form.pug",
+		"/home/mat/git/dropnode/configs/server.conf",
+		"/home/mat/git/dropnode/lib/app/database/package.json",
+		"/home/mat/git/dropnode/.dropnode.log",
+		"/home/mat/git/dropnode/data.log",
+		"/home/mat/git/dropnode/lib/app/package.json",
+		"/home/mat/git/test/winston.test.js",
+		"/home/mat/git/dropnode/package.json",
+		"/home/mat/git/winston/lib/winston/transports/file.js",
+		"/home/mat/git/test/node_modules/winston/lib/winston/logger.js",
+		"/home/mat/git/test/node_modules/winston/lib/winston/transports/file.js",
+		"/home/mat/git/test/node_modules/winston/lib/winston/transports/transport.js",
+		"/home/mat/git/dropnode/nodemon.json",
+		"/home/mat/git/dropnode/lib/logger/package.json",
+		"/home/mat/git/dropnode/configs/logging.conf",
+		"/home/mat/git/dropnode/configs/database.ini",
+		"/home/mat/git/dropnode/lib/config/package.json",
+		"/home/mat/git/dropnode/terminal.glue",
+		"/home/mat/.config/sublime-text-3/Packages/User/Default (Linux).sublime-keymap",
+		"/home/mat/git/dropnode.sublime-project",
+		"/home/mat/mount/sublime.key",
+		"/home/mat/mount/key"
+	],
+	"find":
+	{
+		"height": 28.0
+	},
+	"find_in_files":
+	{
+		"height": 0.0,
+		"where_history":
+		[
+		]
+	},
+	"find_state":
+	{
+		"case_sensitive": false,
+		"find_history":
+		[
+			"blobs",
+			"debug",
+			"silly",
+			"handleExceptions",
+			"_onE",
+			"this._onE",
+			"this._one",
+			"on('error",
+			"_getfile",
+			"console.",
+			"fullname",
+			"_createstream",
+			"prototype.log",
+			"targets",
+			"this.dirname"
+		],
+		"highlight": true,
+		"in_selection": false,
+		"preserve_case": false,
+		"regex": false,
+		"replace_history":
+		[
+		],
+		"reverse": false,
+		"show_context": true,
+		"use_buffer2": true,
+		"whole_word": false,
+		"wrap": true
+	},
+	"groups":
+	[
+		{
+			"selected": 0,
+			"sheets":
+			[
+				{
+					"buffer": 0,
+					"file": "profs.js",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 5789,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								0,
+								0
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/JavaScript/JavaScript.sublime-syntax",
+							"translate_tabs_to_spaces": false
+						},
+						"translation.x": 0.0,
+						"translation.y": 0.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 0,
+					"type": "text"
+				}
+			]
+		}
+	],
+	"incremental_find":
+	{
+		"height": 28.0
+	},
+	"input":
+	{
+		"height": 44.0
+	},
+	"layout":
+	{
+		"cells":
+		[
+			[
+				0,
+				0,
+				1,
+				1
+			]
+		],
+		"cols":
+		[
+			0.0,
+			1.0
+		],
+		"rows":
+		[
+			0.0,
+			1.0
+		]
+	},
+	"menu_visible": true,
+	"output.find_results":
+	{
+		"height": 0.0
+	},
+	"output.nodejs":
+	{
+		"height": 130.0
+	},
+	"pinned_build_system": "",
+	"project": ".profs.sublime-project",
+	"replace":
+	{
+		"height": 52.0
+	},
+	"save_all_on_build": true,
+	"select_file":
+	{
+		"height": 0.0,
+		"last_filter": "",
+		"selected_items":
+		[
+		],
+		"width": 0.0
+	},
+	"select_project":
+	{
+		"height": 0.0,
+		"last_filter": "",
+		"selected_items":
+		[
+		],
+		"width": 0.0
+	},
+	"select_symbol":
+	{
+		"height": 0.0,
+		"last_filter": "",
+		"selected_items":
+		[
+		],
+		"width": 0.0
+	},
+	"selected_group": 0,
+	"settings":
+	{
+	},
+	"show_minimap": true,
+	"show_open_files": true,
+	"show_tabs": true,
+	"side_bar_visible": true,
+	"side_bar_width": 203.0,
+	"status_bar_visible": true,
+	"template_settings":
+	{
+	}
+}

@@ -78,7 +78,7 @@ fs.walk('path/to/dir', options).return(js_files)
 
   Will walk a file hierarchy and create a _File tree_ representation of it, where each node is a `File` object.
   The root node is provided when the promise resolves.
-  If options.filter is used it will act as a _filter function_ on each node.
+  If options.filter is used it will act as a _filter function_ on each node, including it in the _file tree_ when it returns truthy values.
   If the `filter`, `onFile`, or `onDirectory` options are used the promissory chain will wait for them to be fulfilled before it is fulfilled.
 
 ## mkdirp(filepath:String)

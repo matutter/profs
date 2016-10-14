@@ -1,14 +1,14 @@
 {
   "name": "profs",
-  "version": "1.0.3",
+  "version": "1.1.0",
   "description": "A promissory fs module with extra helpful goodness",
   "main": "profs.js",
   "directories": {
     "test": "test"
   },
   "scripts": {
-    "test": "rm test/data -rf && mocha --slow 0 ./test",
-    "test-w-coverage": "./node_modules/istanbul/lib/cli.js cover ./node_modules/mocha/bin/_mocha -- spec ./test/test.js"
+    "test": "rm test/data -rf && mocha --slow 0 ./test/test.js",
+    "test-w-coverage": "./node_modules/istanbul/lib/cli.js cover ./node_modules/mocha/bin/_mocha -- -R spec ./test/test.js"
   },
   "repository": {
     "type": "git",

@@ -17,5 +17,24 @@ describe(`walk "${global.data.walk}" { filter: file => !file.basename.startsWith
       })
     }).should.be.fulfilled
   })
+})
+
+describe('walk with the onFile callback options', () => {
+  it(`should be able to pick out select files`, () => {
+
+    // get all '.js' files (alt)
+    var js_files = []
+
+    var options = {
+      filter: file => file.isDirectory || file.basename.endsWith('.js'),
+      onFile: (file, parent) => js_files.push(file.basename)
+    }
+
+    // Using Bluebird's "Promise.return"
+    return profs.walk('..', options).return(js_files).then(files => {
+      assert(js_files.every(file => file.endsWith('.js')))
+    }).should.be.fulfilled
+  })
+
 
 })

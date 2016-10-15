@@ -14,8 +14,10 @@ profs = require('..')
 
 global.data = {
   mkdirp : 'test/data/does/not/exist/yet',
-  walk : 'test/'
+  walk : 'test/',
+  touch: ['test/data/file.txt', 'test/data/does/not/file.txt']
 }
 
 require('./mkdirp.js')
+require('./touch.js')
 require('./walk.js')

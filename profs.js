@@ -7,6 +7,7 @@ Promise.promisifyAll(fs)
 module.exports = fs
 module.exports.walk = walk
 module.exports.mkdirp = mkdirp
+module.exports.touch = touch
 module.exports.File = File
 
 /**
@@ -166,4 +167,18 @@ function mkdirp(filepath) {
 		}).then(filepath => fs.mkdirAsync(filepath))
 			.catch(allowEEXIST)
 	})
+}
+
+/**
+* Creates a file if it does not exist.
+*	Will fail if file exists and cannot be read or written to (EACCESS).
+*	@param {String | Buffer} path Path to file to create.
+*	@param {Boolean} truncate (optional) If true the file will be truncated if it exists. Default is false.
+* @param {Integer} mode (optional) Sets the sticky bits for the file if it doesn't exist. Default is 0666.
+*/
+function touch(filepath, truncate, mode) {
+	truncate = truncate || false
+	mode = mode || '0666'
+	const flags = truncate ? 'w+' : 'a+'
+	return fs.openAsync(filepath, flags, mode).then(fs.closeAsync.bind(fs))
 }

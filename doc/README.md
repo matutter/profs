@@ -44,16 +44,15 @@ fs.walk('path/to/dir', options).then( tree_root => {
 ```
 
 ```javascript
-// get all '.js' files (alt)
+// get all '.js' file names using `onFile` callback
 var js_files = []
 
 var options = {
-  filter: file.isDirectory || file.endsWith('.js'),
-  onFile: js_files.append.bind(js_files)
+  filter: file => file.isDirectory || file.basename.endsWith('.js'),
+  onFile: (file, parent) => js_files.push(file.basename)
 }
 
-// Using Bluebird's "Promise.return"
-fs.walk('path/to/dir', options).return(js_files)
+fs.walk('..', options).return(js_files)
 ```
 
 

@@ -105,10 +105,10 @@ function defaultWalkCallback(child, parent) {
 * `options.filter` is a _filter function_ on each node which determines if a node will be included, or excluded, from the _file tree_.
 *	The promissory chain will wait for all `filter`, `onFile`, `onDirectory` callbacks to finish if they return a promise.
 * @param {String} root The root path to begin the file-walk
-* @param {Object} opts Options for specifying filter and/or onFile & onDirectory handlers
-* @param {Function} opts.filter Function which must return truthy values to allow a directory or file to trigger handler.
-* @param {Function} opts.onFile Function which may return a promise to be included in root promissory chain, called each non-directory.
-* @param {Function} opts.onDirectory Function which may return a promise to be included in root promissory chain, called on each directory.
+* @param {{filter: Function, onFile: Function, onDirectory: Function} =} opts Options for specifying filter and/or onFile & onDirectory handlers.
+*		*filter* Function which must return truthy values to allow a directory or file to trigger handler.
+* 	*onFile* Function which may return a promise to be included in root promissory chain, called each non-directory.
+* 	*onDirectory* Function which may return a promise to be included in root promissory chain, called on each directory.
 * @return {Promise} Resolves a File tree, navigable from root to leaf by the File.children property
 */
 function walk(root, opts) {
@@ -173,8 +173,8 @@ function mkdirp(filepath) {
 * Creates a file if it does not exist.
 *	Will fail if file exists and cannot be read or written to (EACCESS).
 *	@param {String | Buffer} path Path to file to create.
-*	@param {Boolean} truncate (optional) If true the file will be truncated if it exists. Default is false.
-* @param {Integer} mode (optional) Sets the sticky bits for the file if it doesn't exist. Default is 0666.
+*	@param {Boolean =} truncate (optional) If true the file will be truncated if it exists. Default is false.
+* @param {Integer =} mode (optional) Sets the sticky bits for the file if it doesn't exist. Default is 0666.
 */
 function touch(filepath, truncate, mode) {
 	truncate = truncate || false

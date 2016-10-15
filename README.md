@@ -62,7 +62,7 @@ fs.walk('..', options).return(js_files)
 
   - [File()](#filefilepathstring)
   - [File.flatten()](#fileflattenflatarray)
-  - [walk()](#walkrootstringoptsobjectoptsfilterfunctionoptsonfilefunctionoptsondirectoryfunction)
+  - [walk()](#walkrootstringoptsobjectobject)
   - [mkdirp()](#mkdirpfilepathstring)
   - [touch()](#touchpathstringbuffertruncatebooleanmodeinteger)
 
@@ -74,7 +74,7 @@ fs.walk('..', options).return(js_files)
 
   Flattens all File nodes into a single flat array.
 
-## walk(root:String, opts:Object, opts.filter:Function, opts.onFile:Function, opts.onDirectory:Function)
+## walk(root:String, opts:[object Object])
 
   Walk will recursively walk a directory structure creating a _file tree_ as it progresses.
   	The _file tree_ is a composite of _"nodes"_ where each node is a `File` object and may be traversed by the `File.children` property;

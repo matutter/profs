@@ -13,20 +13,21 @@ describe(`walk "${global.data.walk}"`, () => {
 })
 
 describe(`walk "${global.data.walk}" filters: dir != node_modules & file.endsWith(js)`, () => {
-
-  const options = {
-    filter : {
-      directory : d => d.basename !== 'node_modules',
-      file : f => f.basename.endsWith('.js')
-    }
-  }
-
   it(`should only aggregate files ending in '.js' and directories not 'node_modules'`, () => {
+
+    const options = {
+      filter : {
+        directory : d => d.basename !== 'node_modules',
+        file : f => f.basename.endsWith('.js')
+      }
+    }
+    
     return profs.walk(global.data.walk, options).then(tree => {
       var result = tree.flatten()
         .filter(f => f.isFile)
         .map(file => file.basename)
         .every(name => name.endsWith('.js'))
+
       assert(result, 'All files end with js')
     }).should.be.fulfilled
   })

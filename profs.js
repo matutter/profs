@@ -75,7 +75,7 @@ File.prototype.flatten = function(filter) {
 
 function flatten(node, filter) {
 	const flat = []
-	const nodes = [node]
+	var nodes = [node]
 	var index = 0
 
 	if(filter) {

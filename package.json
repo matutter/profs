@@ -8,6 +8,7 @@
   },
   "scripts": {
     "test": "rm test/data -rf && mocha --slow 0 ./test/test.js",
+    "testv6": "nvm exec 6 npm test",
     "test-w-coverage": "./node_modules/istanbul/lib/cli.js cover ./node_modules/mocha/bin/_mocha -- -R spec ./test/test.js",
     "dox": "dox -a < profs.js > doc/api.md && cat doc/README* > README.md && cat doc/api* >> README.md"
   },

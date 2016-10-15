@@ -1,4 +1,5 @@
 node_modules/
-test/files/
+test/data/
 coverage/
 *.log
+*.sublime-workspace

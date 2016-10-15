@@ -1,14 +1,16 @@
 {
   "name": "profs",
-  "version": "1.0.3",
+  "version": "1.1.0",
   "description": "A promissory fs module with extra helpful goodness",
   "main": "profs.js",
   "directories": {
     "test": "test"
   },
   "scripts": {
-    "test": "mocha ./test",
-    "test-w-coverage": "./node_modules/istanbul/lib/cli.js cover ./node_modules/mocha/bin/_mocha -- -R spec ./test/"
+    "test": "rm test/data -rf && mocha --slow 0 ./test/test.js",
+    "testv6": "nvm exec 6 npm test",
+    "test-w-coverage": "./node_modules/istanbul/lib/cli.js cover ./node_modules/mocha/bin/_mocha -- -R spec ./test/test.js",
+    "dox": "dox -a < profs.js > doc/api.md && cat doc/README* > README.md && cat doc/api* >> README.md"
   },
   "repository": {
     "type": "git",
@@ -25,14 +27,15 @@
     "url": "https://github.com/matutter/profs/issues"
   },
   "homepage": "https://github.com/matutter/profs#readme",
-  "dependencies": {
-    "q": "^1.4.1"
-  },
   "devDependencies": {
     "chai": "^3.5.0",
     "chai-as-promised": "^5.3.0",
     "coveralls": "^2.11.9",
     "istanbul": "^0.4.4",
-    "mocha": "^2.5.3"
+    "mocha": "^2.5.3",
+    "pug": "^2.0.0-beta6"
+  },
+  "dependencies": {
+    "bluebird": "^3.4.6"
   }
 }

@@ -1,29 +1,12 @@
-var assert = require('chai').use(require('chai-as-promised')).assert
-var pro = require('..')
-var fs = require('fs')
 
-var dir = './test/files'
-var nested = './test/files/nested/nested/nested'
+const file = global.data.removerf
 
-describe('setup', ()=> {
-  it('should make a "files" directory with a file inside', ()=> {
-    fs.mkdirSync(dir)
-    return assert.eventually.equal(pro.mkdirp(nested), null)
+describe(`removerf ${file}`, () => {
+  it(`should delete all files and directories including ${file}`, () => {
+    return profs.removerf(file).should.be.fulfilled
   })
-})
 
-describe('removerf', ()=> {
-  describe("on a directory with files", ()=> {
-    it('should delete them & return null', ()=> {
-      return assert.eventually.equal(pro.removerf(dir), null)
-    })
+  after(`check to see if ${file} is deleted`, () => {
+    return profs.readdirAsync(file).should.be.rejected // with an ENOENT
   })
-  describe("on file that doesn't exist", () => {
-    it("should throw ENOENT", ()=> {
-      return assert.eventually.equal(pro.removerf(dir).catch(e=>e.code), 'ENOENT')
-    })
-  })
-})
-
-describe('cleanup', ()=> {
 })

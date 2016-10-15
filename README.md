@@ -44,16 +44,15 @@ fs.walk('path/to/dir', options).then( tree_root => {
 ```
 
 ```javascript
-// get all '.js' files (alt)
+// get all '.js' file names using `onFile` callback
 var js_files = []
 
 var options = {
-  filter: file.isDirectory || file.endsWith('.js'),
-  onFile: js_files.append.bind(js_files)
+  filter: file => file.isDirectory || file.basename.endsWith('.js'),
+  onFile: (file, parent) => js_files.push(file.basename)
 }
 
-// Using Bluebird's "Promise.return"
-fs.walk('path/to/dir', options).return(js_files)
+fs.walk('..', options).return(js_files)
 ```
 
 
@@ -65,6 +64,7 @@ fs.walk('path/to/dir', options).return(js_files)
   - [File.flatten()](#fileflattenflatarray)
   - [walk()](#walkrootstringoptsobjectoptsfilterfunctionoptsonfilefunctionoptsondirectoryfunction)
   - [mkdirp()](#mkdirpfilepathstring)
+  - [touch()](#touchpathstringbuffertruncatebooleanmodeinteger)
 
 ## File(filepath:String)
 
@@ -89,3 +89,8 @@ fs.walk('path/to/dir', options).return(js_files)
 
   Creates all non-existing directories in a root-to-leaf direction after checking if the leaf doesn't exist.
   The root promise should be fulfilled in a race-tolerant way ( EEXIST are allowed after an ENOENT )
+
+## touch(path:String|Buffer, truncate:Boolean, mode:Integer)
+
+  Creates a file if it does not exist.
+  	Will fail if file exists and cannot be read or written to (EACCESS).

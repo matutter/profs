@@ -2,6 +2,7 @@
   - [File.flatten()](#fileflattenflatarray)
   - [walk()](#walkrootstringoptsobjectoptsfilterfunctionoptsonfilefunctionoptsondirectoryfunction)
   - [mkdirp()](#mkdirpfilepathstring)
+  - [touch()](#touchpathstringbuffertruncatebooleanmodeinteger)
 
 ## File(filepath:String)
 
@@ -26,3 +27,8 @@
 
   Creates all non-existing directories in a root-to-leaf direction after checking if the leaf doesn't exist.
   The root promise should be fulfilled in a race-tolerant way ( EEXIST are allowed after an ENOENT )
+
+## touch(path:String|Buffer, truncate:Boolean, mode:Integer)
+
+  Creates a file if it does not exist.
+  	Will fail if file exists and cannot be read or written to (EACCESS).

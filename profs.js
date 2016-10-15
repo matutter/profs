@@ -226,6 +226,7 @@ function walk(root, opts) {
 	}
 
 	return walk_internal(new File(root), null, opts)
+		.then(tree => tree ? tree : Promise.reject(new Error('No files met criteria')))
 		.then(tree => opts.flatten ? tree.flatten(flatten_filter) : tree)
 }
 

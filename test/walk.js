@@ -21,7 +21,7 @@ describe(`walk "${global.data.walk}" filters: dir != node_modules & file.endsWit
         file : f => f.basename.endsWith('.js')
       }
     }
-    
+
     return profs.walk(global.data.walk, options).then(tree => {
       var result = tree.flatten()
         .filter(f => f.isFile)
@@ -85,4 +85,55 @@ describe(`walk: File.flatten( Function ) accepts an optional filter function`, (
       }).should.be.fulfilled
   })
 
+})
+
+
+describe('walk: options.filter may be a function, or object', () => {
+
+  it('should use the filter for files & directories when a function is provided', () => {
+    var dirs = false
+    var files = false
+
+    const options = {
+      filter: file => {
+        if(file.isFile) files = true
+        if(file.isDirectory) dirs = true
+        return true
+      }
+    }
+    return profs.walk('..', options).then(() => {
+      assert(dirs && files, 'shows one callback was used for both')
+    }).should.be.fulfilled
+  })
+
+})
+
+
+describe('walk: File.each(callback, true) ', () => {
+  it('should iterate on the root first by default', () => {
+    return profs.walk('..').then(root => {
+      
+      var first = true
+      return root.each(file => {
+        if(first) {
+          assert(root === file)
+          first = false
+        }
+      })
+    }).should.be.fulfilled
+  })
+})
+
+
+describe('walk with a directory filter that rejects all directories', () => {
+  it('should throw an Error', () => {
+
+    const options = {
+      filter: {
+        directory: () => false
+      }
+    }
+
+    return profs.walk('..', options).should.be.rejected
+  })
 })

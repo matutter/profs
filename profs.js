@@ -81,9 +81,9 @@ function flatten(node, filter) {
 	if(filter) {
 		do {
 			node = nodes[index++]
+			nodes = nodes.concat(node.children)
 			if(!filter(node)) continue
 			flat.push(node)
-			nodes = nodes.concat(node.children)
 		} while(index < nodes.length)
 	} else {
 		do {

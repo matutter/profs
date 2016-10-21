@@ -124,7 +124,6 @@ describe('walk: File.each(callback, true) ', () => {
   })
 })
 
-
 describe('walk with a directory filter that rejects all directories', () => {
   it('should throw an Error', () => {
 
@@ -135,5 +134,18 @@ describe('walk with a directory filter that rejects all directories', () => {
     }
 
     return profs.walk('..', options).should.be.rejected
+  })
+})
+
+describe('File.flatten( f => f.isFile ) == File.flatten().filter( f => f.isFile )', () => {
+  it('should create an array of only files', () => {
+
+    var dir = global.data.walk
+
+    return profs.walk(dir).then(tree => {
+      var files = tree.flatten().filter(f => f.isFile)
+      var files2 = tree.flatten(f => f.isFile)
+      assert(files.length == files2.length, 'flatten filter failed')
+    }).should.be.fulfilled
   })
 })

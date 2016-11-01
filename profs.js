@@ -158,25 +158,24 @@ function defaultWalkFilter(file) {
 
 /**
 * Walk will recursively walk a directory structure creating a _file tree_ as it progresses.
-*	The _file tree_ is a composite of _"nodes"_ where each node is a `File` object and may be traversed by the `File.children` property;
-*	`File.children` is an array of `File` objects.    
+*	The _file tree_ is a composite of _"nodes"_ where each node is a `File` object and may be traversed by the `File.children` property, or, File.parent.
+*	`File.children` is an array of `File` objects and File.parent is mutable.    
 * 
-* Walk will return the _root_ node once the promised is fulfilled.    
+* Walk will return the _root_ node once the promise is fulfilled.    
 *	
-* `options.filter` is a _filter function_ on each node which determines if a node will be included, or excluded, from the _file tree_.
-* The filter option may also be an object with a `file` and `directory` filter function such as `{ file: f=>true, directory: d=>true }`;
-* These explicit _filter functions_ are passed either only files or directories respectively.    
+* `options.filter` is a _filter function_ on each node which will filter the nodes inclusion within the _file tree_.
+*  The filter option may also be an object with a `file` and `directory` _filter function_; example `{ file: f=>true, directory: d=>true }`.   
 *
-* The `onFile` and `onDirectory` functions are _handler_ functions which are pass the file or directory, the parent directory, and the options passed to
-* the _walk_ function (if any).        
-*
+* The `onFile` and `onDirectory` functions are _handler_ functions which are passed either a file or directory & the parent directory if any.    
+* Example: `{ onFile : (file, parent, options) => { ... } }`
+* 
 * The `filter`, if truthy, will flatten the _file tree_ before it is returned. This may also be a _filter function_ to return only specific Files.    
 *
 *	The promissory chain will wait for all `filter`, `onFile`, `onDirectory` callbacks to finish if they return a promise; returning a promise is not necessary.
 *
 * @param {String} root The root path to begin the file-walk
 * @param {{filter: Function | {file: Function, directory: Function =}, onFile: Function, onDirectory: Function} =} opts Options for specifying filter and/or onFile & onDirectory handlers.
-*		`filter` Function which must return truthy values to allow a directory or file to trigger handler.
+*       `filter` Function which must return truthy values to allow a directory or file to trigger handler.
 * 	`onFile` Function which may return a promise to be included in root promissory chain, called each non-directory.
 * 	`onDirectory` Function which may return a promise to be included in root promissory chain, called on each directory.
 * @return {Promise} Resolves a File tree, navigable from root to leaf by the File.children property
